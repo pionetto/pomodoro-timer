@@ -33,6 +33,9 @@ function App() {
             }
         }
     }
+    const controlTime = () => {
+
+    }
     return ( 
     <div className="center-align">
         <h1>Pomodoro Clock</h1>
@@ -54,6 +57,16 @@ function App() {
         />
         </div>
      <h1>{formatTime(displayTime)}</h1>
+     <button className="btn-large deep-purple lighten-2" onClick={controlTime}>
+        {timerOn ? (
+            <i className="material-icons">pause_circle_filled</i>
+        ): (
+            <i className="material-icons">play_circle_filled</i>
+        )}
+     </button>
+     <button className="btn-large deep-purple lighten-2">
+        <i className="material-icons">autorenew</i>
+     </button>
     </div>
     );
 }
