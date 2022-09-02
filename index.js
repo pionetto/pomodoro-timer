@@ -4,6 +4,7 @@ function App() {
     const [breakTime, setBreakTime] = React.useState(5*60);
     const [sessionTime, setSessionTime] = React.useState(25*60);
     const [timerOn, setTimerOn] = React.useState(false);
+    const [onBreak, setOnBreak] = React.useState(false);
 
     const formatTime = (time) => {
         let minutes = Math.floor(time / 60);
@@ -34,8 +35,36 @@ function App() {
         }
     }
     const controlTime = () => {
+        let second = 1000;
+        let date = new Date().getTime();
+        let nextDate = new Date().getTime() + second;
+        let onBreakVariable = onBreak;
 
-    }
+        if (!timerOn) {
+            let interval = setInterval(() => {
+                date = new Date().getTime();
+                if(date > nextDate) {
+                    setDisplayTime((prev) => {
+                        return prev -1;
+                    });
+                    nextDate += second;
+                }
+            }, 30);
+            localStorage.clear();
+            localStorage.setItem('interval-id', interval)
+        }
+        if(timerOn) {
+            clearInterval(localStorage.getItem("interval-id"));
+        }
+        setTimerOn(!timerOn)
+    };
+
+    const resetTime = () => {
+        setDisplayTime(25*60);
+        setBreakTime(5*60);
+        setSessionTime(25*60);
+    };
+
     return ( 
     <div className="center-align">
         <h1>Pomodoro Clock</h1>
@@ -64,7 +93,7 @@ function App() {
             <i className="material-icons">play_circle_filled</i>
         )}
      </button>
-     <button className="btn-large deep-purple lighten-2">
+     <button className="btn-large deep-purple lighten-2" onClick={resetTime}>
         <i className="material-icons">autorenew</i>
      </button>
     </div>
