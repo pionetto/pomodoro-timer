@@ -45,6 +45,15 @@ function App() {
                 date = new Date().getTime();
                 if(date > nextDate) {
                     setDisplayTime((prev) => {
+                        if(prev <= 0 && !onBreakVariable){
+                            onBreakVariable=true;
+                            setOnBreak(true)
+                            return breakTime;
+                        } else if (prev <=0 && onBreakVariable) {
+                            onBreakVariable=false;
+                            setOnBreak(false)
+                            return sessionTime;      
+                        }
                         return prev -1;
                     });
                     nextDate += second;
@@ -67,10 +76,10 @@ function App() {
 
     return ( 
     <div className="center-align">
-        <h1>Pomodoro Clock</h1>
+        <h1>CTD Pomodoro Clock</h1>
         <div className="dual-container">
         <Length 
-            title={"break length"} 
+            title={"Break Length"} 
             changeTime={changeTime} 
             type={"break"} 
             time={breakTime} 
@@ -78,22 +87,22 @@ function App() {
         />
 
         <Length 
-            title={"session length"} 
+            title={"Session Length"} 
             changeTime={changeTime} 
-            type={"session"} 
+            type={"session"}
             time={sessionTime} 
             formatTime={formatTime}
         />
         </div>
      <h1>{formatTime(displayTime)}</h1>
-     <button className="btn-large deep-purple lighten-2" onClick={controlTime}>
+     <button className="btn-large gray lighten-2" onClick={controlTime}>
         {timerOn ? (
             <i className="material-icons">pause_circle_filled</i>
         ): (
             <i className="material-icons">play_circle_filled</i>
         )}
      </button>
-     <button className="btn-large deep-purple lighten-2" onClick={resetTime}>
+     <button className="btn-large gray lighten-2" onClick={resetTime}>
         <i className="material-icons">autorenew</i>
      </button>
     </div>
@@ -105,13 +114,13 @@ function Length({title, changeTime, type, time, formatTime}) {
         <div>
             <h3>{title}</h3>
             <div className="time-sets">
-                <button className="btn-small deep-purple lighten-2"
+                <button className="btn-small gray lighten-2"
                     onClick={() => changeTime(-60, type)}
                 > 
                     <i className="material-icons">arrow_downward</i>
                 </button>
                 <h3>{formatTime(time)}</h3>
-                <button className="btn-small deep-purple lighten-2"
+                <button className="btn-small gray lighten-2"
                 onClick={() => changeTime(60, type)}
                 > 
                     <i className="material-icons">arrow_upward</i>
